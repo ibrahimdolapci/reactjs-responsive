@@ -19,6 +19,19 @@ export const eventsSlice = createSlice({
             const selectedEvent = action.payload;
             state.selectedEvent = state.selectedEvent?.id === selectedEvent.id ? undefined : action.payload;
         },
+        updateAction: (state: EventsState, action: PayloadAction<{ value: string }>) => {
+            if(!state.selectedEvent) return state;
+
+            const eventIndex = state.dataSource.findIndex(({id}) => id === state.selectedEvent?.id);
+            const details = state.selectedEvent.details.slice() || [];
+
+            const index = details.findIndex(({title}) => title === 'Aksiyon');
+            if (index >= 0) {
+                details[index] = {...details[index], value: action.payload.value};
+                state.selectedEvent = {...state.selectedEvent, details};
+                state.dataSource[eventIndex] = state.selectedEvent;
+            }
+        },
         updateEvent: (state: EventsState, action: PayloadAction<IEvent>) => {
             const selectedEvent = action.payload;
             const index = state.dataSource.findIndex(({id}) => id === selectedEvent.id);

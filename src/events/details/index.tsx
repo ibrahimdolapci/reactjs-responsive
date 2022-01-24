@@ -4,6 +4,7 @@ import {Tabs, Typography} from "antd";
 import {AdditionalInfo} from "./details";
 import {LocationDetails} from "./location";
 import {Actions} from "./actions";
+import {Media} from "./media";
 
 const {TabPane} = Tabs;
 
@@ -25,7 +26,7 @@ export function EventDetails() {
                         <LocationDetails/>
                     </TabPane>
                     <TabPane tab="Media" key="3">
-                        Content of Tab Pane 3
+                        <Media/>
                     </TabPane>
                 </Tabs>
             </div>

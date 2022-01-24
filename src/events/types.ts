@@ -5,9 +5,14 @@ export enum DetailFormatTypes {
     Vehicle = "vehicle"
 }
 
+export enum EventMediaTypes {
+    Image = "image",
+    Audio = "audio"
+}
+
 export interface IEventMedia {
     url: string,
-    type: string,
+    type: EventMediaTypes,
 }
 
 export enum EventActions {
