@@ -1,4 +1,4 @@
-import {IEvent} from "../events/types";
+import {IEvent} from "../pages/events/types";
 
 export interface RootState {
     events: EventsState
@@ -6,6 +6,5 @@ export interface RootState {
 
 export type EventsState = {
     selectedEvent?: IEvent;
-    visitedEventIds: number[];
     dataSource: IEvent[];
 }

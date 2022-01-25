@@ -1,34 +1,31 @@
 import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {EventsState, RootState} from "./types";
-import {IEvent} from "../events/types";
-import {example_response} from "../events/list/data";
+import {IEvent} from "../pages/events/types";
+import {example_response} from "../pages/events/list/data";
 
 
 const initialState: EventsState = {
     dataSource: example_response.data as IEvent[],
-    visitedEventIds: []
 }
 
 export const eventsSlice = createSlice({
     name: 'counter',
     initialState,
     reducers: {
-        selectEvent: (state: EventsState, action: PayloadAction<IEvent>) => {
-            state.visitedEventIds.push(action.payload.id);
-
-            const selectedEvent = action.payload;
-            state.selectedEvent = state.selectedEvent?.id === selectedEvent.id ? undefined : action.payload;
+        selectEvent: (state: EventsState, action: PayloadAction<number>) => {
+            state.selectedEvent = state.dataSource.find(item => item.id === action.payload);
         },
         updateAction: (state: EventsState, action: PayloadAction<{ value: string }>) => {
-            if(!state.selectedEvent) return state;
+            if (!state.selectedEvent) return state;
 
-            const eventIndex = state.dataSource.findIndex(({id}) => id === state.selectedEvent?.id);
             const details = state.selectedEvent.details.slice() || [];
 
             const index = details.findIndex(({title}) => title === 'Aksiyon');
             if (index >= 0) {
                 details[index] = {...details[index], value: action.payload.value};
                 state.selectedEvent = {...state.selectedEvent, details};
+
+                const eventIndex = state.dataSource.findIndex(({id}) => id === state.selectedEvent?.id);
                 state.dataSource[eventIndex] = state.selectedEvent;
             }
         },
@@ -43,8 +40,7 @@ export const eventsSlice = createSlice({
 
 export const selectEvents = (state: RootState) => state.events;
 
-export const selectSelectedEvent = createSelector(selectEvents, events => events.selectedEvent)
 export const selectDataSource = createSelector(selectEvents, events => events.dataSource)
-export const selectVisitedEventIds = createSelector(selectEvents, events => events.visitedEventIds)
+export const selectSelectedEvent = createSelector(selectEvents, events => events.selectedEvent)
 
 export default eventsSlice.reducer
